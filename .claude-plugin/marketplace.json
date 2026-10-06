@@ -1,0 +1,14 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "padezhnov",
+  "description": "Claude Code mods by Evgeny Padezhnov.",
+  "owner": { "name": "Evgeny Padezhnov" },
+  "plugins": [
+    {
+      "name": "unattended",
+      "description": "Resume on your own after a usage-limit reset, and stop the agent burning the new window on the same failing call.",
+      "category": "productivity",
+      "source": "./plugins/unattended"
+    }
+  ]
+}
