@@ -38,6 +38,8 @@ claude --plugin-dir ./plugins/unattended
 
 `/auto-resume` shows the state; `/auto-resume now` sends it now; `/auto-resume cancel` drops it.
 
+**Try it without waiting for a real limit:** `/auto-resume test 1` arms a resume one minute out, exactly as a usage limit would. Leave the session idle and watch the band, the status line and `continue` arriving on their own.
+
 ### Loop breaker
 
 - Watches every tool call. The same call (same command, or same edit to the same file) failing **with the same error** is counted; timestamps, PIDs, durations and temp paths are ignored when comparing.
@@ -77,7 +79,7 @@ claude --plugin-dir ./plugins/unattended
 
 ## Status
 
-0.1.0, early. 38 tests run against Claude Code's own plugin test harness (`claude plugin test`), and the loop breaker was checked in a live session. Auto-resume has not yet been observed on a real usage-limit hit — if you see it fire (or not), please open an issue with what the band said.
+0.1.0, early. 38 tests run against Claude Code's own plugin test harness (`claude plugin test`), and the loop breaker was checked in a live session. Auto-resume has not yet been observed on a real usage-limit hit. If you see it fire (or not), please open an issue with the [auto-resume report](../../issues/new?template=auto-resume-report.md) template — `/auto-resume status` output is all it needs.
 
 ## Development
 

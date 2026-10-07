@@ -125,7 +125,7 @@ export const register: Register = (on, options) => {
     await $.command.register({
       name: 'auto-resume',
       description: 'Auto-resume after a usage limit: show, run now, or cancel the pending resume',
-      argumentHint: '[status|now|cancel]',
+      argumentHint: '[status|now|cancel|test <minutes>]',
       immediate: true,
     })
     await $.command.register({
@@ -237,7 +237,7 @@ export const register: Register = (on, options) => {
         {p !== null && (
           <Box>
             <Text dimColor>
-              {`Usage limit${p.window === 'unknown' ? '' : ` (${p.window.replace('_', '-')})`}: resuming at ${clockLabel(p.at)}, in ${durationLabel(p.at - now)}` +
+              {`${p.window === 'test' ? 'Test resume' : 'Usage limit'}${p.window === 'unknown' || p.window === 'test' ? '' : ` (${p.window.replace('_', '-')})`}: resuming at ${clockLabel(p.at)}, in ${durationLabel(p.at - now)}` +
                 (settings.maxResumes > 1 ? ` · ${done + 1}/${settings.maxResumes} ` : ' ')}
             </Text>
             <Button key="resume-cancel" label="Cancel" onPress={() => disarm($)} />
@@ -263,6 +263,15 @@ export const register: Register = (on, options) => {
       if (p === null) return { text: 'Nothing is pending.' }
       await disarm($)
       return { text: 'Pending resume cancelled.' }
+    }
+    const testRun = /^test(?:\s+(\d+))?$/.exec(arg)
+    if (testRun) {
+      // A dry run of the real path: arms a resume as a usage limit would, so you
+      // can watch the band, the status line and the prompt arriving while idle.
+      const minutes = Math.min(60, Math.max(1, Number(testRun[1] ?? 1)))
+      const at = (await $.clock.now()) + minutes * 60_000
+      await arm($, { at, window: 'test' })
+      return { text: `Test: "${settings.resumePrompt}" will be sent at ${clockLabel(at)} (in ${minutes}m) unless you type something first.` }
     }
     if (arg === 'now') {
       if (p === null) return { text: 'Nothing is pending.' }

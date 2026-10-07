@@ -178,4 +178,20 @@ describe('auto-resume', () => {
     await clock.advance(H + GRACE)
     expect(world.submits).toEqual([{ text: 'continue', own: true }])
   })
+
+  test('/auto-resume test 2 arms a real resume two minutes out; typing cancels it', async ($, on) => {
+    const world = worldOf(on)
+    const clock = mock.clock(on, { now: T0 })
+
+    await $.session.start(SESSION)
+    const armed = await $.command.run({ command: 'auto-resume', args: 'test 2' } as never)
+    expect(armed.text).toContain('in 2m')
+    await clock.advance(2 * MIN)
+    expect(world.submits).toEqual([{ text: 'continue', own: true }])
+
+    await $.command.run({ command: 'auto-resume', args: 'test' } as never)
+    await $.prompt.submit(typed('stop'))
+    await clock.advance(5 * MIN)
+    expect(world.submits.filter(s => s.own).length).toBe(1)
+  })
 })
