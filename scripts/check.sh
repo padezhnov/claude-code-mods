@@ -19,5 +19,14 @@ for dir in "$ROOT"/plugins/*/; do
     cp "$src" "$dir/.claude-plugin/types/claude-code/index.d.ts"
   fi
   $TSC -p "$dir"
-  "$CLAUDE" plugin test "$dir"
+  out=$("$CLAUDE" plugin test "$dir" 2>&1) || status=$?
+  # Another, older Claude Code on the same machine can save the mods rollout
+  # switch as off; one networked start of this CLI refreshes it.
+  if printf '%s' "$out" | grep -q 'rollout switch'; then
+    echo "(refreshing the mods rollout switch with one short run)"
+    (cd /tmp && "$CLAUDE" -p "reply: ok" --model haiku >/dev/null 2>&1) || true
+    status=0; out=$("$CLAUDE" plugin test "$dir" 2>&1) || status=$?
+  fi
+  printf '%s\n' "$out"
+  [ "${status:-0}" -eq 0 ] || exit "$status"
 done
