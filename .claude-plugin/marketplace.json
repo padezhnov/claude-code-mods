@@ -2,13 +2,21 @@
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "padezhnov",
   "description": "Claude Code mods by Evgeny Padezhnov.",
-  "owner": { "name": "Evgeny Padezhnov" },
+  "owner": {
+    "name": "Evgeny Padezhnov"
+  },
   "plugins": [
     {
       "name": "unattended",
       "description": "Resume on your own after a usage-limit reset, and stop the agent burning the new window on the same failing call.",
       "category": "productivity",
       "source": "./plugins/unattended"
+    },
+    {
+      "name": "anti-slop",
+      "description": "Fewer narrating comments and stock phrases: nudges Claude right after a comment-heavy edit; keeps \"load-bearing\" and \"You're absolutely right\" out of replies.",
+      "category": "productivity",
+      "source": "./plugins/anti-slop"
     }
   ]
 }

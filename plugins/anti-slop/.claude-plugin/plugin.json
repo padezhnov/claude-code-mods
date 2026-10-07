@@ -1,0 +1,41 @@
+{
+  "name": "anti-slop",
+  "version": "0.1.0",
+  "description": "Fewer narrating comments and fewer stock phrases: nudges Claude right after an edit that piles on comments, and keeps \"load-bearing\" and \"You're absolutely right\" out of its replies.",
+  "author": { "name": "Evgeny Padezhnov" },
+  "license": "MIT",
+  "keywords": ["mod", "comments", "style", "load-bearing", "slop"],
+  "userConfig": {
+    "comments": {
+      "type": "string",
+      "title": "Comment nudges",
+      "description": "nudge tells Claude, right after an edit, to remove comments that restate the code or narrate the change; off does nothing. Edits are never refused.",
+      "default": "nudge",
+      "options": ["nudge", "off"]
+    },
+    "minComments": {
+      "type": "number",
+      "title": "Comment lines before a nudge",
+      "description": "An edit is nudged when it adds at least this many comment lines (and the share below). A comment narrating the change is nudged at once.",
+      "default": 3
+    },
+    "commentPercent": {
+      "type": "number",
+      "title": "Share of comment lines (%)",
+      "description": "…and they are at least this percent of the lines the edit added.",
+      "default": 30
+    },
+    "phrases": {
+      "type": "string",
+      "title": "Phrases",
+      "description": "Comma-separated. \"phrase=>replacement\" rewrites it in stored replies; \"phrase=>\" drops it; a bare phrase is only asked to be avoided.",
+      "default": "load-bearing=>critical, You're absolutely right=>, You are absolutely right=>"
+    },
+    "rewrite": {
+      "type": "boolean",
+      "title": "Rewrite stored replies",
+      "description": "Apply the replacements to the reply as the conversation keeps it, so Claude does not keep echoing the phrase.",
+      "default": true
+    }
+  }
+}
