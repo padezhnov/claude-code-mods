@@ -1,0 +1,36 @@
+{
+  "name": "native-edits",
+  "version": "0.1.0",
+  "description": "File changes through Edit and Write, not sed -i and heredocs: rewrites auto mode's shell-first advice and refuses Bash commands that write project files, so every change has a diff, can be rewound and follows the path's rules.",
+  "author": { "name": "Evgeny Padezhnov" },
+  "license": "MIT",
+  "keywords": ["mod", "auto mode", "sed", "heredoc", "rewind", "edit"],
+  "userConfig": {
+    "mode": {
+      "type": "string",
+      "title": "Shell writes",
+      "description": "deny refuses a Bash command that writes a project file and tells Claude to use Edit or Write (when Claude has neither tool, the command runs); warn runs it and tells Claude afterwards; off does nothing. Nobody is ever asked.",
+      "default": "deny",
+      "options": ["deny", "warn", "off"]
+    },
+    "scope": {
+      "type": "string",
+      "title": "Which files",
+      "description": "project: files under the session's directory; everywhere: any local file except /tmp and $TMPDIR.",
+      "default": "project",
+      "options": ["project", "everywhere"]
+    },
+    "allowPaths": {
+      "type": "string",
+      "title": "Always allowed",
+      "description": "Comma-separated globs the shell may always write (** any depth; a glob without / matches the file name).",
+      "default": "**/*.log,**/node_modules/**,**/dist/**,**/build/**"
+    },
+    "rewritePrompt": {
+      "type": "boolean",
+      "title": "Rewrite the auto-mode note",
+      "description": "Auto mode tells Claude to make file changes with sed, heredocs or short scripts, and drops the Bash tool's 'Edit files: Use Edit' lines. Rewrite that sentence and put the lines back: reading through Bash stays, changes go to Edit and Write.",
+      "default": true
+    }
+  }
+}

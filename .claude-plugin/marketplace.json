@@ -17,6 +17,12 @@
       "description": "Fewer narrating comments and stock phrases: nudges Claude right after a comment-heavy edit; keeps \"load-bearing\" and \"You're absolutely right\" out of replies.",
       "category": "productivity",
       "source": "./plugins/anti-slop"
+    },
+    {
+      "name": "native-edits",
+      "description": "File changes through Edit and Write, not sed -i and heredocs: rewrites auto mode's shell-first advice and refuses Bash commands that write project files, so every change has a diff and can be rewound.",
+      "category": "productivity",
+      "source": "./plugins/native-edits"
     }
   ]
 }

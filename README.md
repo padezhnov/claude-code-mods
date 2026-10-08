@@ -4,14 +4,16 @@
 |---|---|
 | [**unattended**](#unattended) | Resumes on its own after a usage-limit reset; stops the agent burning the new window on the same failing call. |
 | [**anti-slop**](#anti-slop) | Fewer narrating comments and stock phrases: nudges Claude right after a comment-heavy edit; keeps "load-bearing" and "You're absolutely right" out of replies. |
+| [**native-edits**](#native-edits) | File changes through Edit and Write, not `sed -i` and heredocs: every change gets a diff, can be rewound and follows the path's rules. |
 
 ```
 /plugin marketplace add padezhnov/claude-code-mods
 /plugin install unattended@padezhnov
 /plugin install anti-slop@padezhnov
+/plugin install native-edits@padezhnov
 ```
 
-Needs Claude Code **2.1.287 or newer** (mods). Each mod is one or two small files with no network access — read them before installing.
+Needs Claude Code **2.1.287 or newer** (mods). Each mod is a few plain TypeScript files with no network access — read them before installing.
 
 ---
 
@@ -108,6 +110,23 @@ Two long-running complaints about Claude Code: it piles comments onto code that 
 - `/anti-slop` shows what it caught. Settings: `comments` (`nudge`/`off`), `minComments`, `commentPercent`, `phrases` (`phrase=>replacement`, `phrase=>` to drop, bare phrase to only avoid), `rewrite`.
 
 Checked in a live session: asked to comment every line, Claude made the edit, got the note, and removed the comments in a second edit; asked to say "load-bearing", the reply read "critical".
+
+---
+
+## native-edits
+
+In auto mode Claude Code tells the model, in so many words, to "make small, mechanical file changes with sed, heredocs, or short scripts instead of the dedicated Read, Edit, or Write tools". So it does: on our machines about half of all local file changes went through Bash. `/rewind` cannot undo those changes ([#87575](https://github.com/anthropics/claude-code/issues/87575)), they skip the nested `CLAUDE.md` and path rules that Edit and Write load ([#90450](https://github.com/anthropics/claude-code/issues/90450)), and any hook or mod that checks Edit and Write never sees them ([#19649](https://github.com/anthropics/claude-code/issues/19649), [#87971](https://github.com/anthropics/claude-code/issues/87971), [#88041](https://github.com/anthropics/claude-code/issues/88041)). Claude Code does show a diff of what a Bash command changed, but only in auto and bypass mode and only inside a git repository.
+
+- **The cause.** The auto-mode note is rewritten before the model reads it: reading and searching through Bash (`cat`, `sed -n`, `grep`) stays, file changes go to Edit (or Write for a new file). Claude Code adds that note in auto mode and with bypass permissions, depending on the model and a server-side cohort; in the same sessions it drops the "Edit files: Use Edit (NOT sed/awk)" lines from the Bash tool's description, and the mod puts an equivalent line back. Only the wording 2.1.289–2.1.292 uses is replaced; another build's note is left exactly as it is, and the guard below still applies. These builds also read an undocumented environment variable, `CLAUDE_CODE_THRIFTY_SONIC=0`, that turns this shell-first mode off altogether; we have not tested it and it may change in any release.
+- **The guard.** A Bash command that writes a file in your project is not run. Claude is told which files and to use Edit or Write instead; you are never asked. It catches `sed -i`, `perl -i`, `ruby -i`, `awk -i inplace` and `yq -i` (every target, also through `find -exec`, `xargs` and loops), `cat > f <<EOF`, `echo`/`printf` redirections, `tee`, `x > f.tmp && mv f.tmp f` when x is text Claude wrote or a filter of f itself, writes inside shell functions, and Python, Node or Deno snippets that rewrite a file or write literal text (`open(p, 'w')`, `writeFileSync`), including a script written to `/tmp` and run in the same command. Shell variables in those snippets are filled in as the shell would (`open('$S/x', 'w')` with `S=/tmp/…` is a scratch file).
+- **When Claude has no Edit or Write tool** (`--disallowedTools Edit Write`, a headless run with Bash only), the write runs: a refusal would leave no way to make the change. A subagent's tools are not visible to the mod, so a subagent is refused once per file and told that the same command runs on a second try.
+- **What it leaves alone:** reading and searching; `/tmp`, `$TMPDIR` and the session scratchpad; `/dev/null` and `2>&1`; files outside the project (setting `scope`); anything run on another machine (`ssh`, `scp`, `rsync`, `docker exec`); output of programs (`git diff > x.patch`, `npm test > out.txt`, `curl … > page.html`, `curl … | jq . > f.tmp && mv f.tmp f`, a script dumping computed JSON); content only known at run time (`echo "$(date)" >> f`, an unquoted heredoc with `$VAR`); paths only known at run time (`xargs -I{}`, an unset variable); and `allowPaths` (default `**/*.log,**/node_modules/**,**/dist/**,**/build/**`).
+- A bulk change (`sed -i` over 15 files) is refused like any other: Claude then makes it with Edit. Use `warn` or `allowPaths` if you would rather let those through.
+- `/native-edits` shows how many writes were refused, warned or let through, whether the auto-mode note was rewritten, and any `allowPaths` glob it could not read (an invalid glob is ignored, the rest still apply). Settings: `mode` (`deny`, `warn` runs the command and tells Claude afterwards, `off`), `scope` (`project` or `everywhere`), `allowPaths`, `rewritePrompt`.
+
+Checked in a live session: asked to "change red to blue in file.txt using sed -i", Haiku's `sed -i` was refused, it read the file and made the change with Edit. With Edit and Write disallowed, the same `sed -i` ran. A `python3 - <<EOF` writing to `$T/probe.txt` with `T` set to a scratch directory ran. In auto mode, Opus quoted the rewritten note back instead of the original.
+
+Replayed against all 20,197 Bash commands in our own transcripts (429 sessions and subagents): 2,090 commands would have been refused, writing 3,079 files, against 2,721 Edit and Write calls in the same sessions. Of 60 random refusals checked by hand, 59 were plain edits or new files Claude wrote through the shell and one was borderline (a manifest rewritten with computed hashes). Of 40 random commands that look like writes but were let through, none was a missed edit: they ran on another machine, saved a program's output, or wrote nothing. Writes to a path only known at run time (62, about 2%) are let through by design.
 
 ---
 

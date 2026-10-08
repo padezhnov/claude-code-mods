@@ -1,5 +1,9 @@
 # Changelog
 
+## native-edits 0.1.0 — 2026-10-07
+
+- First release: the auto-mode note's shell-edit sentence rewritten to send file changes to Edit and Write; Bash commands that write project files refused (`deny`) or noted (`warn`); `scope`, `allowPaths`, `/native-edits`.
+
 ## anti-slop 0.1.0 — 2026-10-07
 
 - First release: comment nudges, phrase avoidance and rewriting, `/anti-slop`.
