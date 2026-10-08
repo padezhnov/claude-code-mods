@@ -3,7 +3,7 @@
 | Mod | What it does |
 |---|---|
 | [**unattended**](#unattended) | Resumes on its own after a usage-limit reset; stops the agent burning the new window on the same failing call. |
-| [**anti-slop**](#anti-slop) | Fewer narrating comments and stock phrases: nudges Claude right after a comment-heavy edit; keeps "load-bearing" and "You're absolutely right" out of replies. |
+| [**anti-slop**](#anti-slop) | Fewer comments that narrate the edit and fewer stock phrases, in English and Russian: a note to Claude right after an edit whose comments say "added X" or "as requested"; "You're absolutely right" dropped from stored replies. |
 | [**native-edits**](#native-edits) | File changes through Edit and Write, not `sed -i` and heredocs: every change gets a diff, can be rewound and follows the path's rules. |
 
 ```
@@ -103,13 +103,15 @@ claude --plugin-dir ./plugins/unattended
 
 ## anti-slop
 
-Two long-running complaints about Claude Code: it piles comments onto code that restate it or narrate the edit, and ignores instructions to stop ([#65961](https://github.com/anthropics/claude-code/issues/65961)); and it cannot stop saying "load-bearing" ([#53454](https://github.com/anthropics/claude-code/issues/53454)).
+Two long-running complaints about Claude Code: it writes comments that narrate the edit instead of explaining the code, and ignores instructions to stop ([#65961](https://github.com/anthropics/claude-code/issues/65961)); and it keeps opening replies with "You're absolutely right" or saying "load-bearing" ([#53454](https://github.com/anthropics/claude-code/issues/53454)). English and Russian are both understood.
 
-- **Comments.** After an edit succeeds, it counts the comment lines the edit added. Three or more that make up 30% of the new lines — or any single comment narrating the change ("added X", "now uses Y", "as requested") — and Claude gets a note, right then, to remove the ones that restate the code. The edit is never refused (that only burns tokens). Tool directives (`eslint-disable`, `noqa`, `@ts-expect-error`, shebangs) and prose files (`.md`, `.txt`) are not counted.
-- **Phrases.** A short system-prompt section asks Claude to avoid them, and the reply as the conversation stores it is rewritten (`load-bearing` → `critical`, an opening "You're absolutely right!" dropped) so Claude does not keep echoing itself. Code spans and fences are left alone. What already streamed to your screen may still show the original.
-- `/anti-slop` shows what it caught. Settings: `comments` (`nudge`/`off`), `minComments`, `commentPercent`, `phrases` (`phrase=>replacement`, `phrase=>` to drop, bare phrase to only avoid), `rewrite`.
+- **Comments.** After an edit succeeds, the comment lines it added are checked for ones that tell the history of the change: "Added retry logic", "I've removed…", "as requested", "used to return null", "until now…", "Добавил…", "Исправлено:", "по просьбе…". Claude gets a short note right then to rephrase those lines to describe the code as it is now, keeping the why. At most one note per file and three per session; the edit is never refused. Quoted text, descriptions of what code does ("Updated by cron", "Token used to call the API", "Добавлено в v2 API"), tool directives, prose files and `/tmp` or scratchpad files are left alone.
+- **Too many comments** is opt-in (`comments: density`): three or more short one-line captions right above code, at 30% or more of the lines the edit added.
+- **Phrases.** By default an opening "Хороший вопрос", "Отличный вопрос", "You're absolutely right" or "You are absolutely right" is dropped from the reply as the conversation stores it, so Claude does not keep echoing itself; a sentence that needs the phrase ("You're absolutely right that the cache is stale") is kept. "Ты прав", "Вы правы" and "load-bearing" are only asked to be avoided, in a short system-prompt section. Code spans, fences and text that looks like JSON are never rewritten, and what already streamed to your screen may still show the original.
+- Changes made through Bash (`sed -i`, heredocs) are not seen; use it with [native-edits](#native-edits), which sends those to Edit and Write.
+- `/anti-slop` shows the settings and what it caught, for this session and, approximately, for all sessions on this machine. Settings: `comments` (`narration`, `density` or `off`), `minComments`, `commentPercent`, `beforeNow` (also count Russian "раньше…" / "теперь…" history comments; off because many teams write these on purpose), `phrases` (`phrase=>replacement`, `phrase=>` to drop an opener, a bare phrase to only avoid), `rewrite`.
 
-Checked in a live session: asked to comment every line, Claude made the edit, got the note, and removed the comments in a second edit; asked to say "load-bearing", the reply read "critical".
+Replayed against our own transcripts (2,816 successful Edit and Write calls): 0.1 would have sent 141 notes; of 30 picked at random, none pointed at comments that only restate the code, 3 at a history sentence inside a longer explanation, and the rest at explanations of why, file headers and section markers. 0.2 sends 3 (4 before the caps), each for an "until now…" or "it used to…" sentence inside a long explanatory comment; no "// Added X" style comment turned up outside `/tmp`. The phrase rewrite changed 15 openers in 29,966 stored text blocks. Treat the comment rule as a light guard, not a cleaner.
 
 ---
 

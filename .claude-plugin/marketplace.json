@@ -14,7 +14,7 @@
     },
     {
       "name": "anti-slop",
-      "description": "Fewer narrating comments and stock phrases: nudges Claude right after a comment-heavy edit; keeps \"load-bearing\" and \"You're absolutely right\" out of replies.",
+      "description": "Fewer comments that narrate the edit and fewer stock phrases, in English and Russian: a note to Claude right after an edit that says \"added X\" or \"as requested\" in a comment, and stock openers like \"You're absolutely right\" dropped from stored replies.",
       "category": "productivity",
       "source": "./plugins/anti-slop"
     },

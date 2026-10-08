@@ -1,5 +1,9 @@
 # Changelog
 
+## anti-slop 0.2.0 — 2026-10-08
+
+- Comment notes only for comments that narrate the edit (English and Russian), at most one per file and three per session; the comment-count rule is opt-in. Openers like "You're absolutely right" dropped from stored replies, "load-bearing" only avoided; JSON never rewritten. See `plugins/anti-slop/CHANGELOG.md`.
+
 ## native-edits 0.1.0 — 2026-10-07
 
 - First release: the auto-mode note's shell-edit sentence rewritten to send file changes to Edit and Write; Bash commands that write project files refused (`deny`) or noted (`warn`); `scope`, `allowPaths`, `/native-edits`.
