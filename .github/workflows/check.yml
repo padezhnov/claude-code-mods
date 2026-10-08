@@ -1,0 +1,42 @@
+name: check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  plugins:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        plugin: [unattended, anti-slop, native-edits]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Validate
+        run: npx -y @anthropic-ai/claude-code@latest plugin validate plugins/${{ matrix.plugin }}
+      - name: Test
+        run: npx -y @anthropic-ai/claude-code@latest plugin test plugins/${{ matrix.plugin }}
+
+  marketplace:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Validate marketplace
+        run: npx -y @anthropic-ai/claude-code@latest plugin validate .
+      - name: No secrets in history
+        run: docker run --rm -v "$PWD:/repo" ghcr.io/gitleaks/gitleaks:latest git --redact --no-banner /repo
