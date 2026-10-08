@@ -7,12 +7,6 @@
   },
   "plugins": [
     {
-      "name": "unattended",
-      "description": "Resume on your own after a usage-limit reset, and stop the agent burning the new window on the same failing call.",
-      "category": "productivity",
-      "source": "./plugins/unattended"
-    },
-    {
       "name": "anti-slop",
       "description": "Fewer comments that narrate the edit and fewer stock phrases, in English and Russian: a note to Claude right after an edit that says \"added X\" or \"as requested\" in a comment, and stock openers like \"You're absolutely right\" dropped from stored replies.",
       "category": "productivity",

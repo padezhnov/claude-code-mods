@@ -6,7 +6,6 @@ Mods run inside Claude Code with your permissions and no sandbox, so what they c
 
 | Mod | Reads | Changes | Network |
 |---|---|---|---|
-| unattended | tool calls and their results, usage-limit info Claude Code reports | refuses a repeated failing call; may send your resume prompt after a limit or a transient API error | none |
 | anti-slop | your edits (to count comments), Claude's replies | adds a note for Claude after an edit; rewrites listed phrases in stored replies | none |
 | native-edits | Bash commands (to spot file writes) | refuses Bash writes to project files; rewrites one sentence of Claude Code's auto-mode instructions | none |
 

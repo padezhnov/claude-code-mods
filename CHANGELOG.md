@@ -1,5 +1,9 @@
 # Changelog
 
+## unattended withdrawn from the first public release — 2026-10-08
+
+- Claude Code now continues after a usage limit on its own ("Continue automatically at usage limit", on by default), and the loop breaker never fired on a month of real sessions. The code is kept on the `unattended-wip` branch until it earns its place.
+
 ## anti-slop 0.2.0 — 2026-10-08
 
 - Comment notes only for comments that narrate the edit (English and Russian), at most one per file and three per session; the comment-count rule is opt-in. Openers like "You're absolutely right" dropped from stored replies, "load-bearing" only avoided; JSON never rewritten. See `plugins/anti-slop/CHANGELOG.md`.

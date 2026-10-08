@@ -3,20 +3,16 @@
   <rect x="0" y="0" width="1280" height="6" fill="#d97757"/>
   <text x="96" y="150" font-family="DejaVu Sans Mono" font-size="30" fill="#d97757">/plugin marketplace add padezhnov/claude-code-mods</text>
   <text x="96" y="250" font-family="DejaVu Sans" font-weight="bold" font-size="76" fill="#faf9f5">Claude Code mods</text>
-  <text x="96" y="310" font-family="DejaVu Sans" font-size="32" fill="#b0aea5">Small hooks that keep an agent honest while you are away.</text>
+  <text x="96" y="310" font-family="DejaVu Sans" font-size="32" fill="#b0aea5">Small hooks that keep an agent's edits honest.</text>
   <g font-family="DejaVu Sans Mono" font-size="28">
-    <rect x="96" y="390" width="330" height="150" rx="14" fill="#1f1e1d" stroke="#3d3d3a"/>
-    <text x="124" y="440" fill="#faf9f5" font-weight="bold">unattended</text>
-    <text x="124" y="482" fill="#b0aea5" font-size="21" font-family="DejaVu Sans">breaks failing-call loops,</text>
-    <text x="124" y="512" fill="#b0aea5" font-size="21" font-family="DejaVu Sans">resumes after API errors</text>
-    <rect x="474" y="390" width="330" height="150" rx="14" fill="#1f1e1d" stroke="#3d3d3a"/>
-    <text x="502" y="440" fill="#faf9f5" font-weight="bold">anti-slop</text>
-    <text x="502" y="482" fill="#b0aea5" font-size="21" font-family="DejaVu Sans">no narrating comments,</text>
-    <text x="502" y="512" fill="#b0aea5" font-size="21" font-family="DejaVu Sans">no stock phrases</text>
-    <rect x="852" y="390" width="330" height="150" rx="14" fill="#1f1e1d" stroke="#3d3d3a"/>
-    <text x="880" y="440" fill="#faf9f5" font-weight="bold">native-edits</text>
-    <text x="880" y="482" fill="#b0aea5" font-size="21" font-family="DejaVu Sans">file changes through Edit,</text>
-    <text x="880" y="512" fill="#b0aea5" font-size="21" font-family="DejaVu Sans">so /rewind can undo them</text>
+    <rect x="96" y="390" width="520" height="150" rx="14" fill="#1f1e1d" stroke="#3d3d3a"/>
+    <text x="124" y="440" fill="#faf9f5" font-weight="bold">anti-slop</text>
+    <text x="124" y="482" fill="#b0aea5" font-size="21" font-family="DejaVu Sans">no narrating comments,</text>
+    <text x="124" y="512" fill="#b0aea5" font-size="21" font-family="DejaVu Sans">no stock phrases</text>
+    <rect x="664" y="390" width="520" height="150" rx="14" fill="#1f1e1d" stroke="#3d3d3a"/>
+    <text x="692" y="440" fill="#faf9f5" font-weight="bold">native-edits</text>
+    <text x="692" y="482" fill="#b0aea5" font-size="21" font-family="DejaVu Sans">file changes through Edit,</text>
+    <text x="692" y="512" fill="#b0aea5" font-size="21" font-family="DejaVu Sans">so /rewind can undo them</text>
   </g>
   <text x="96" y="600" font-family="DejaVu Sans" font-size="22" fill="#6b6a65">No network. No telemetry. MIT.</text>
 </svg>

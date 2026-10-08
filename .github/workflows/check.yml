@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        plugin: [unattended, anti-slop, native-edits]
+        plugin: [anti-slop, native-edits]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
