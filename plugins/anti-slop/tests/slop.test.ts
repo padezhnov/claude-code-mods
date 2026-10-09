@@ -141,7 +141,7 @@ describe('what is judged', () => {
     expect(isScratch('/tmp/cart.js')).toBe(true)
     expect(isScratch('/tmp/claude-0/-root/abc/scratchpad/x.ts')).toBe(true)
     expect(isScratch('/private/var/folders/xy/T/a.py')).toBe(true)
-    expect(isScratch('/root/projects/app/tmp.ts')).toBe(false)
+    expect(isScratch('/home/u/projects/app/tmp.ts')).toBe(false)
     expect(judgeComments('/tmp/cart.js', '', '// Added total calculation as requested\ntotal()')).toBe(null)
   })
 

@@ -224,7 +224,7 @@ export function retryNote(writes: readonly Write[], roots: readonly string[]): s
 
 /**
  * The sentences the auto-mode attachment (`auto_mode`) uses to send file
- * changes through the shell, as Claude Code 2.1.289-2.1.292 words them: the
+ * changes through the shell, as Claude Code 2.1.289-2.1.294 words them: the
  * strict variant and the relaxed one. Tool names are captured, not assumed.
  */
 const STRICT =
