@@ -1,6 +1,6 @@
 {
   "name": "native-edits",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "File changes through Edit and Write, not sed -i and heredocs: rewrites auto mode's shell-first advice and refuses Bash commands that write project files, so every change has a diff, can be rewound and follows the path's rules.",
   "author": { "name": "Evgeny Padezhnov" },
   "license": "MIT",

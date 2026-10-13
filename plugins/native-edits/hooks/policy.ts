@@ -234,7 +234,10 @@ const RELAXED =
 
 function changeRule(edit: string, write: string, shell: string, mode: Settings['mode']): string {
   // The guard watches the Bash tool only.
-  const enforced = mode === 'deny' && shell === 'Bash' ? ` A ${shell} command that writes to a project file is refused.` : ''
+  const enforced =
+    mode === 'deny' && shell === 'Bash'
+      ? ` A ${shell} command that writes to a project file is refused by the native-edits plugin the user installed (in every permission mode; a command the user runs with ! is not affected).`
+      : ''
   return (
     `Make every file change with the ${edit} tool (${write} for a new file or a full rewrite), never with sed -i, heredocs, redirection, tee or scripts, ` +
     `so each change shows as a diff, can be undone with /rewind and follows the rules for that path.${enforced} Scratch files under /tmp are fine.`

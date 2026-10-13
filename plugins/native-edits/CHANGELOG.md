@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.1 — 2026-10-13
+
+- The rewritten auto-mode note names the plugin as the one refusing shell writes, says it applies in every permission mode, and that commands the user runs with `!` are not affected — so Claude no longer blames Claude Code or suggests leaving auto mode.
+
 ## 0.1.0 — 2026-10-07
 
 - The auto-mode note: the sentence telling Claude to make file changes with sed, heredocs or short scripts is rewritten (Claude Code 2.1.289–2.1.292 wording, strict and relaxed variants); reading and searching through Bash stay; another wording is left as is. Where Claude Code drops the "Edit files: Use Edit" lines from the Bash tool's description, an equivalent line is put back.

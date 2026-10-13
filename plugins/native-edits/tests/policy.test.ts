@@ -38,7 +38,7 @@ describe('the auto-mode note', () => {
     const r = rewriteAutoMode(STRICT.replace(/Bash/g, 'PowerShell'), 'deny')
     expect(r.text).toContain('through the PowerShell tool')
     expect(r.text, 'the guard watches Bash only').not.toContain('is refused')
-    expect(rewriteAutoMode(STRICT, 'deny').text).toContain('A Bash command that writes to a project file is refused.')
+    expect(rewriteAutoMode(STRICT, 'deny').text).toContain('A Bash command that writes to a project file is refused by the native-edits plugin the user installed')
   })
 
   test('another wording is left exactly as it is', () => {

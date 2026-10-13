@@ -1,5 +1,9 @@
 # Changelog
 
+## native-edits 0.1.1 — 2026-10-13
+
+- The rewritten note names the plugin as the one refusing shell writes; see `plugins/native-edits/CHANGELOG.md`.
+
 ## unattended withdrawn before the first public release — 2026-10-08
 
 - Claude Code now continues after a usage limit on its own ("Continue automatically at usage limit", on by default), and the loop breaker never fired on a month of real sessions, so it is not shipped.
