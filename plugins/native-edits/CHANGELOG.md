@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.2 — 2026-10-14
+
+- The rewritten note no longer claims that commands the user runs with `!` are unaffected: that was never verified, and Claude was passing it on as advice.
+
 ## 0.1.1 — 2026-10-13
 
 - The rewritten auto-mode note names the plugin as the one refusing shell writes, says it applies in every permission mode, and that commands the user runs with `!` are not affected — so Claude no longer blames Claude Code or suggests leaving auto mode.

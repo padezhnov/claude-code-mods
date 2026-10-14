@@ -1,5 +1,9 @@
 # Changelog
 
+## native-edits 0.1.2 — 2026-10-14
+
+- The rewritten note drops an unverified claim about `!` commands; see `plugins/native-edits/CHANGELOG.md`.
+
 ## native-edits 0.1.1 — 2026-10-13
 
 - The rewritten note names the plugin as the one refusing shell writes; see `plugins/native-edits/CHANGELOG.md`.

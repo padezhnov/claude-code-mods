@@ -2,6 +2,8 @@
 
 *Unofficial — not made or endorsed by Anthropic.*
 
+Before/after examples, install steps and the measurements behind each plugin: **[padezhnov.com/en/tools](https://padezhnov.com/en/tools/)**.
+
 ![Claude Code mods](assets/social-preview.png)
 
 | Mod | What it does |
